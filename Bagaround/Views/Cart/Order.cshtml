@@ -1,0 +1,104 @@
+﻿@model List<Bagaround.Models.Order>
+@{
+    ViewBag.Title = "Order";
+}
+@Styles.Render("~/Content/OrderList")
+
+<div class="container" style="margin-top:5em;overflow:auto;">
+
+    <a href="../BagShop/Home"><i class="fa fa-home fa-3x"></i></a>
+    <h1>Order</h1>
+
+    <table class="container">
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th colspan="4">Detail</th>
+                <th>Payment</th>
+                <th>Sent Out</th>
+            </tr>
+            <tr>
+                <th></th>
+                <th>product</th>
+                <th>Quatity</th>
+                <th>Total price</th>
+                <th>Address</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+                var product = "";
+                var productQantity = "";
+                var totalPrice = "";
+                var userAddress = "";
+                string checkoutButtonClass = item.CheckOut ? "btn btn-success none" : "btn btn-danger";
+                string checkoutTitle = item.CheckOut ? "Payed Paid" : "Paid";
+                string deliveryButtoncClass = item.Delivery ? "btn btn-default none" : "btn btn-success";
+                string deliveryTitle = item.Delivery ? "Send" : "Sent";
+
+
+            <tr>
+                <td><h4>@item.OrderId</h4></td>
+
+
+                @for (int i = 0; i < @item.ProductName.Count; i++)
+                {
+                    product += "- " + @item.ProductName[i] + Environment.NewLine;
+                    productQantity += @item.Quantity[i].ToString() + Environment.NewLine;
+                    totalPrice = @item.TotalPrice.ToString();
+                    userAddress = @item.OwnerName + Environment.NewLine + @item.OwnerAddress;
+
+                }
+
+                <td class="detail">@product</td>
+                <td class="quatity">@productQantity</td>
+                <td class="price">@totalPrice <i class="fa fa-btc"></i></td>
+                <td class="address">@userAddress</td>
+
+                <td>
+
+                    @if (item.Slip != null)
+                    {
+                        <img id="myImg" src="~/Paymentslip/@item.Slip" width="50" height="50">
+
+                    }
+
+                    <a href=@Url.Action("CheckoutProduct","Cart",new { orderId = @item.OrderId}) class="@checkoutButtonClass">@checkoutTitle</a>
+                </td>
+                <td><a href=@Url.Action("SentProduct", "Cart",new { orderId = @item.OrderId }) class="@deliveryButtoncClass">@deliveryTitle</a></td>
+            </tr>
+        }
+    </table>
+</div>
+
+@Html.Partial("_SlipView")
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var modal = document.getElementById('slipModal');
+
+            // Get the image and insert it inside the modal - use its "alt" text as a caption
+            var img = document.getElementById('myImg');
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+            img.onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
+            }
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+        });
+
+    </script>
+}

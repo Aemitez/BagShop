@@ -1,0 +1,11 @@
+#build -> test -> deploy
+ 
+AnalyzerJob:
+  stage: build
+  script:
+    - SonarAnalyzerJob.bat
+  only:
+    - master
+  tags:
+    - PublicRunner
+

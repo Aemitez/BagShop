@@ -1,0 +1,14 @@
+﻿@model Bagaround.Models.HomeListItem
+@{
+    ViewBag.Title = "ShowProductSelectType";
+    ViewBag.Folder = "SelectedAndSearch";
+}
+
+@Html.Partial("../BagShop/_Navbar", Model)
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("../BagShop/_PhotoList", Model.PhototList)
+    </div>
+</div>
+

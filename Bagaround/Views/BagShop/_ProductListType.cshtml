@@ -1,0 +1,5 @@
+﻿@model List<Bagaround.Models.ProductType>
+@foreach (var item in Model)
+{
+    <a id="productType" href=@Url.Action("SetSessionType", "SelectedAndSearch", new { typeId = @item.ProductTypeId})>@item.ProductTypeName</a>
+}

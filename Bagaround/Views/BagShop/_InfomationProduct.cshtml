@@ -1,0 +1,96 @@
+﻿@model Bagaround.Models.HomeListItem
+
+<div class="col-md-3 col-xs-12">
+    @Html.HiddenFor(x => x.ProductItemInfo.ProductId, new { @id = "id" })
+    <p id="productName">@Model.ProductItemInfo.ProductName</p>
+
+    <p id="productPrice"><i class="fa fa-btc"></i>  @String.Format("{0:#,0.00}", Model.ProductItemInfo.Price)</p>
+    <hr style="padding-bottom:1em" />
+
+    @if (@Model.ProductItemInfo.Available == true && Model.ProductItemInfo.Stock > 0)
+            {
+        <div class="col-xs-6" style="padding-left:0;">
+            @Html.Label("Quantity", new { @id = "textQuantity" })
+        </div>
+        <div class="col-xs-6">
+            @Html.TextBoxFor(x => x.ProductItemInfo.Quantity, new { @Class = "form-control", @type = "number", @Value = "1", @min = "1", @max = "10", id = "productQuantity" })
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="col-xs-12" style="padding-left:0;padding-top:3em;">
+            <p id="available">AVAILABLE IN STORE</p>
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="col-xs-12" style="padding-left:0;">
+            @if (Bagaround.Models.SessionMenager.Role == "Admin")
+            {
+                <div class="row">
+                    @Html.Label("Number of product in stock", new { @id = "textQuantity" })
+                    @Html.TextBoxFor(x => x.ProductItemInfo.Stock, new
+               {
+                   @Class = "form-control",
+                   @readonly = "readonly"
+               })
+                </div>
+                <a href=@Url.Action("EditProductInfo", "BagShop", new { bagId = Model.ProductItemInfo.ProductId }) type="submit" class="btn btn-warning" style="padding-top:0.7em;">
+                    <i class="fa fa-pencil-square-o"></i> Edit
+                </a>
+            }
+            else
+            {
+                if (Bagaround.Models.SessionMenager.Role == "User")
+                {
+                    <button data-toggle="modal" data-target="#SuccessModal" type="submit" class="btn btn-success" style="padding-top:0.7em;" id="addToCart"><i class="fa fa-cart-arrow-down fa-2" aria-hidden="true"></i> Add To Cart</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-success" style="padding-top:0.7em;" id="addToCartNotLogin" onclick="window.location.replace('../Login/Login')">
+                        <i class="fa fa-cart-arrow-down fa-2" aria-hidden="true">
+                        </i> Add To Cart
+                    </button>
+                    <p class="text-danger">***Please Login First***</p>
+                }
+
+            }
+        </div>
+
+    }
+    else
+    {
+        <div class="col-xs-6" style="padding-left:0">
+            @Html.Label("Quantity", new { @style = "font-size:large;font-weight:bold;color:gray;" })
+        </div>
+        <div class="col-xs-6">
+            <input class="form-control" type="number" id="number_product" style="max-width:5em;" disabled="disabled" />
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-xs-12" style="padding-left:0;padding-top:3em;">
+            <p id="inAvailable">NOT AVAILABLE IN STORE</p>
+        </div>
+        <div class="col-xs-12" style="padding-left:0">
+            @if (Bagaround.Models.SessionMenager.Role == "Admin")
+            {
+                <div class="row">
+                    @Html.Label("Number of product in stock", new { @id = "textQuantity" })
+                    @Html.TextBoxFor(x => x.ProductItemInfo.Stock, new
+               {
+                   @Class = "form-control",
+                   @readonly = "readonly"
+               })
+                </div>
+                <a href=@Url.Action("EditProductInfo", "BagShop", new { bagId = Model.ProductItemInfo.ProductId }) type="submit" class="btn btn-warning" style="padding-top:0.7em;">
+                    <i class="fa fa-pencil-square-o"></i> Edit
+                </a>
+            }
+            else
+            {
+
+                <button type="submit" class="btn" style="padding-top:0.7em;" disabled="disabled"><i class="fa fa-cart-arrow-down fa-2" aria-hidden="true"></i> Add To Cart</button>
+            }
+        </div>
+    }
+
+    <hr />
+    <p>@Model.ProductItemInfo.Description</p>
+</div>

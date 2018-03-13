@@ -1,0 +1,39 @@
+﻿@model Bagaround.Models.HomeListItem
+
+@{
+    ViewBag.Title = "Home";
+    ViewBag.Folder = "BagShop";
+}
+
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@Styles.Render("~/Content/bxslider")
+@Scripts.Render("~/bundles/bxslider")
+
+@Html.Partial("_Navbar", Model)
+
+
+<div class="row">
+    <ul id="slider1">
+        <li><img id="homeImage" src="@Url.Content("~/Photo/_onsite 1080x550_F.jpg")" /></li>
+        <li><img id="homeImage" src="@Url.Content("~/Photo/outdoor_onsite 1080x420.jpg")" /></li>
+        <li><img id="homeImage" src="@Url.Content("~/Photo/Legato_onsite 1080x420.jpg")" /></li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 ">
+        @Html.Partial("_PhotoList", Model.PhototList)
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        $('#slider1').bxSlider({
+            mode: 'fade',
+            auto: true,
+            pause: 3000
+        });
+ });
+</script>
+    }

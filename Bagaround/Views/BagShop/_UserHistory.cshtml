@@ -1,0 +1,41 @@
+﻿@model Bagaround.Models.RegisterViewModel
+
+<div id="userHistory" class="container well">
+    <h2>History</h2>
+    @if (Model.HistoryPayment.Count != 0)
+    {
+        <table class="table-bordered table-condensed table-striped" style="text-align:center;">
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Delivered</th>
+            </tr>
+            @foreach (var item in Model.HistoryPayment)
+            {
+                var totalPrice = item.Price * item.Quantity;
+                <tr>
+                    <td>
+                        <a href=@Url.Action("ProductInfo", "BagShop", new { bagId = @item.ProductId })>
+                            <img src="@Url.Content($"~/Photo/{@item.ImageName}")" width="133" height="200" />
+                        </a>
+                    </td>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@totalPrice</td>
+                    @if (item.Status)
+                    {
+                        <td><i class="fa fa-check" aria-hidden="true" style="color:lightgreen"></i></td>
+                    }
+                    else
+                    {
+                        <td><i class="fa fa-times" aria-hidden="true" style="color:lightcoral"></i></td>
+                    }
+
+                </tr>
+            }
+        </table>
+    }
+    
+</div>

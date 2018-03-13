@@ -1,0 +1,54 @@
+﻿@model Bagaround.Models.HomeListItem
+@{
+    ViewBag.Title = "ProductInfo";
+}
+
+@Html.Partial("_Navbar", Model)
+
+<div class="container">
+    <div style="margin-top:1em"></div>
+    <div class="form-group">
+        <div class="col-md-offset-1 col-md-6 col-xs-12">
+            <ul class="pgwSlider" style="overflow:auto;">
+
+                @foreach (var item in Model.PhototList)
+                {
+                    <li><img src="@Url.Content($"~/Photo/{@item.PictureName}")" alt="@item.ProductBagName"></li>
+                }
+            </ul>
+        </div>
+        @Html.Partial("_InfomationProduct", Model)
+    </div>
+    <div class="form-group">
+    </div>
+</div>
+
+@section styles{
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.pgwSlider').pgwSlider();
+            $('#addToCart').click(function () {
+                var productId = $('#id').val();
+                var productQuantity = $('#productQuantity').val();
+                var data = {
+                    'id': productId,
+                    'quantity': productQuantity
+                };
+                if (productQuantity > 10) {
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.error('Fail !!! \r\n You can not add any items more than 10');
+                }
+                else {
+                    alertify.set('notifier', 'position', 'top-right');
+                    alertify.success('Success !!! \r\n Your items are in your cart');
+                    $.post('@Url.Action("AddCart","Cart")', data);
+                }
+
+            });
+        });
+    </script>
+
+}

@@ -1,0 +1,45 @@
+﻿@model Bagaround.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "UserViewModel Information";
+}
+
+<h2>User Information</h2>
+<div class="container">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="@Url.Action("Home","BagShop")"><i class="fa fa-home fa-4x" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            @Html.Partial("_UserDetail", Model)
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @Html.Partial("_UserHistory", Model)
+        </div>
+
+
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#about').summernote({
+                height: 200,                 // set editor height
+                minHeight: 200,             // set minimum height of editor
+                maxHeight: 600,
+                toolbar: [
+                    ['style', ['style']],
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['fontsize', ['fontsize']]
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,144 @@
+﻿@model Bagaround.Models.HomeListItem
+
+@{
+    ViewBag.Title = "Home";
+}
+
+@Html.Partial("../BagShop/_Navbar", Model)
+
+@Styles.Render("~/Content/CartTable")
+@Scripts.Render("~/bundles/filestyle")
+<div class="form-group">
+    @if (Model.CartModel.Count() != 0)
+    {
+        decimal totalprice = 0;
+        string listItem = "";
+        <table class="col-xd-12" style="width:100%">
+            <tr>
+                <th>Item</th>
+                <th>Product Detail</th>
+                <th>Price Per Unit</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.CartModel)
+            {
+                <tr>
+                    <td>
+                        <a href=@Url.Action("ProductInfo", "BagShop", new { bagId = @item.ProductId })>
+                            <img id="productIncart" src="@Url.Content($"~/Photo/{@item.ProductImage}")" />
+                        </a>
+                    </td>
+                    <td>@item.ProductName</td>
+                    <td>@String.Format("{0:#,0.00}", @item.ProductPrice)</td>
+                    <td>@item.Quantity</td>
+                    <td>
+                        <a href="@Url.Action("DeleteInCart","Cart",new { productInCartId = @item.ProductInCartId })"><i class="fa fa-times fa-2x"></i></a>
+                    </td>
+                </tr>
+                totalprice += item.ProductPrice * item.Quantity;
+                listItem += "- " + item.ProductName + Environment.NewLine;
+            }
+            <tfoot>
+                <tr>
+                    <td>Total Price</td>
+                    <td style="white-space:pre-line;text-align:left;">@listItem</td>
+                    <td>@String.Format("{0:#,0.00}", @totalprice)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+        <br />
+        using (@Html.BeginForm("Upload" ,"Upload",new { totalPrice = totalprice }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            var cartId = Model.CartModel.Select(x => x.CartId).First();
+            <div class="col-md-offset-10 col-xs-2">
+                <button style="margin-left:5em;" class="btn btn-success" data-toggle="modal" data-target="#CheckoutModal">Check Out<i class="fa fa-check" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal fade" id="CheckoutModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title"><i class="fa fa-list-ol"></i> CheckOut Form</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div class="col-md-12">
+                                    @Html.Label("Order Id : " + cartId)
+                                </div>
+                                <div class="col-md-12">
+
+                                    @Html.Label("Product List")
+                                </div>
+                                @foreach (var item in Model.CartModel)
+                                {
+                                    <div class="col-md-offset-1 col-md-11">
+                                        @String.Format("{0:#,0.00}", @item.ProductName)
+                                    </div>
+                                    <div class="col-md-offset-1 col-md-11">
+                                        Quatity: @item.Quantity
+
+                                    </div>
+                                    <div class="col-md-offset-1 col-md-11">
+                                        Price Per Unit: @String.Format("{0:#,0.00}", @item.ProductPrice)
+
+                                    </div>
+                                }
+                                <div class="col-md-12">
+                                    @Html.Label("Total price", new { @Styles = "font-weight:100" })
+                                </div>
+                                <div class="col-md-offset-1 col-md-11">
+                                    @String.Format("{0:#,0.00}", @totalprice) <i class="fa fa-btc"></i>
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.Label("Account")
+                                </div>
+                                <div class="col-md-offset-1 col-md-11">
+                                    <img src="~/Content/images/Kbank.jpg" style="width:100px; height:50px;" />
+                                    @Html.Label("Iconext: 123-1-123456")
+                                </div>
+                                <div class="col-md-12">
+                                    @Html.Label("Upload your slip")
+                                </div>
+                                <div class="col-md-offset-1 col-md-11">
+                                    <input type="file" class="filestyle"  name="file" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success">
+                                <i class="fa fa-pencil-square-o"></i> Submit
+                            </button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div style="margin-bottom:10em;">
+            <center>
+                <h1 style="color:gray;">You Didn't Have Any Item In Your Cart</h1>
+                <img src="../Content/images/no-product.png">
+            </center>
+        </div>
+    }
+
+</div>
+
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        $(":file").filestyle({ placeholder: "Your Payment Slip" });
+    });
+    </script>
+}
+

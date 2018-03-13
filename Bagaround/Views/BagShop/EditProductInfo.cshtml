@@ -1,0 +1,83 @@
+﻿@model Bagaround.Models.HomeListItem
+
+@{
+    ViewBag.Title = "EditProductInfo";
+}
+
+@Html.Partial("_Navbar", Model)
+
+@Scripts.Render("~/bundles/filestyle")
+@Styles.Render("~/Content/AddNewProduct")
+
+
+@using (@Html.BeginForm("EditProductInfo", "BagShop", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    <div class="form-style-8">
+        <h2>Edit Product Information</h2>
+        <div class="form-group ">
+            <div class="row">
+                @Html.LabelFor(x => x.ProductItemInfo.ProductId)
+                @Html.TextBoxFor(x => x.ProductItemInfo.ProductId, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+            <div class="row">
+                @Html.LabelFor(x => x.ProductItemInfo.ProductName)
+                @Html.TextBoxFor(x => x.ProductItemInfo.ProductName, new { @class = "form-control", @placeholder = "Product name" })
+            </div>
+            <div class="row">
+                @Html.LabelFor(x => x.ProductItemInfo.Price)
+                @Html.TextBoxFor(x => x.ProductItemInfo.Price, new { @class = "form-control", @placeholder = "Price" })
+            </div>
+            <div class="row">
+                @Html.Label("Categories")
+                @Html.DropDownListFor(x => x.SelectedProductType, Model.ProductTypes, new { @Class = "form-control", @placeholder = "Categories" })
+            </div>
+            <div class="row">
+                @Html.Label("Brand")
+                @Html.DropDownListFor(x => x.SelectedBrandType, Model.BrandTypes, new { @Class = "form-control", @placeholder = "Brand" })
+            </div>
+            <div class="row">
+                @Html.Label("Number of product in stock")
+                @Html.TextBoxFor(x => x.ProductItemInfo.Stock, new { @class = "form-control", @placeholder = "Number of product in stock" })
+            </div>
+            <div class="row">
+                @Html.LabelFor(x => x.ProductItemInfo.Description)
+                @Html.TextAreaFor(x => x.ProductItemInfo.Description, new { @class = "form-control", @placeholder = "Description" })
+            </div>
+            <div class="row">
+                <div class="col-md-4" style="padding:0em;">
+                    @Html.Label("Upload photo")
+                    <div class="form-group">
+                        <input type="file" class="filestyle" name="file" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                @if (Model.ProductItemInfo.Available)
+                {
+                    @Html.CheckBoxFor(x => x.ProductItemInfo.Available, new { @checked = "checked" })
+                }
+                else
+                {
+                    @Html.CheckBoxFor(x => x.ProductItemInfo.Available)
+                }
+
+                @Html.LabelFor(x => x.ProductItemInfo.Available)
+            </div>
+        </div>
+        <br />
+        <div class="col-md-5 col-md-offset-3">
+            <button type="submit" class="btn btn-success btn-block"><i class="fa fa-floppy-o"></i> Save</button>
+        </div>
+        <br />
+    </div>
+}
+@section scripts{
+        <script>
+            $(document).ready(function () {
+            $(":file").filestyle({ placeholder: "Photo Product", icon: true ,size: "lg"});
+
+            });
+        </script>
+    }

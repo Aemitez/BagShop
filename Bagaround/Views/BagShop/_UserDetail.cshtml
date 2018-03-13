@@ -1,0 +1,41 @@
+﻿@model Bagaround.Models.RegisterViewModel
+
+
+@using (Html.BeginForm("EditUserData", "BagShop", FormMethod.Post))
+{
+
+    <div class="container well">
+        <div class="form-group ">
+            <div class="col-md-12">
+                <h2>Information</h2>
+            </div>
+            @Html.HiddenFor(x => x.UserId)
+            @Html.HiddenFor(x => x.Role)
+            @Html.HiddenFor(x => x.Username)
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.Name)
+                @Html.TextBoxFor(x => x.Name, new { @Class = "form-control" })
+            </div>
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.LastName)
+                @Html.TextBoxFor(x => x.LastName, new { @Class = "form-control" })
+            </div>
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.CreditCard)
+                @Html.TextBoxFor(x => x.CreditCard, new { @Class = "form-control", Type = "number" })
+            </div>
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.Address)
+                @Html.TextBoxFor(x => x.Address, new { @Class = "form-control" })
+            </div>
+            <div class="col-md-12">
+                @Html.LabelFor(x => x.Description)
+                @Html.TextAreaFor(x => x.Description, new { @Class = "summernote", id = "about", rows = "2", placeholder = "About", name = "Detail" })
+            </div>
+            <div class="col-md-5 col-md-offset-4">
+                <button class="btn btn-success  btn-block" type="submit"><i class="fa fa-check-circle" aria-hidden="true"></i> Save</button>
+            </div>
+        </div>
+    </div>
+}
+
